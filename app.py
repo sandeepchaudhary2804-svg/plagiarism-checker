@@ -8,8 +8,8 @@ import os
 app = Flask(__name__, static_url_path='', static_folder='.')
 
 # Replace these with your actual Copyleaks credentials
-COPYLEAKS_EMAIL = sandeepchaudhary2804@gmail.com
-COPYLEAKS_API_KEY = 1830619b-5aca-49df-bc43-474209748b0a
+COPYLEAKS_EMAIL = "sandeepchaudhary2804@gmail.com"
+COPYLEAKS_API_KEY = "1830619b-5aca-49df-bc43-474209748b0a"
 
 def get_access_token():
     url = "https://id.copyleaks.com/v3/account/login/api"
