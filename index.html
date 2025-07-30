@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Plagiarism Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #28a745;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .ad-space {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Free Online Plagiarism Checker</h1>
+        <div class="ad-space">
+            <!-- Google AdSense code goes here -->
+        </div>
+        <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+        <br>
+        <button onclick="checkPlagiarism()">Check Plagiarism</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        async function checkPlagiarism() {
+            const text = document.getElementById('inputText').value;
+            const resultDiv = document.getElementById('result');
+
+            if (text.trim() === "") {
+                resultDiv.innerHTML = "<p style='color:red;'>Please enter some text to check.</p>";
+                return;
+            }
+
+            resultDiv.innerHTML = "<p>🔍 Checking for plagiarism... Please wait (~45 seconds)</p>";
+
+            try {
+                const res = await fetch('/check', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ text })
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    resultDiv.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3>Plagiarism Report</h3>
+                        <p>📊 <strong>${data.plagiarism_percent}% plagiarized</strong></p>
+                        <p>🔗 Source matched: <a href="${data.matched_url}" target="_blank">${data.matched_url}</a></p>
+                    `;
+                }
+
+            } catch (err) {
+                console.error(err);
+                resultDiv.innerHTML = "<p style='color:red;'>Something went wrong.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
